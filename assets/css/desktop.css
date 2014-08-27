@@ -1,0 +1,375 @@
+/* keyframes */
+
+@-webkit-keyframes rotate {
+  100% {-webkit-transform: rotate(360deg);}
+}
+@keyframes rotate {
+  100% {transform: rotate(360deg);}
+}
+@-webkit-keyframes hideDescription {
+  100% {
+    -webkit-transform: translateY(50px);
+  }
+}
+@keyframes hideDescription {
+  100% {
+    transform: translateY(50px);
+  }
+}
+
+
+/* global */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+:root, body {
+  height: 100%;
+}
+:root {
+  font: 500 .75em "helvetica neue", helvetica, arial, sans-serif;
+  text-align: center;
+}
+h1 {
+  font-size: 1em;
+  font-weight: 500;
+}
+ul {
+  list-style: none;
+}
+p {
+  color: #86919F;
+}
+.visible, .hidden {
+  transition: opacity .8s;
+}
+.hidden {
+  opacity: 0;
+}
+.spinner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: calc(50% - 10px);
+  top: calc(50% - 10px);
+  pointer-events: none;
+  border: 2px solid #86919F;
+  border-radius: 10px;
+  transition: opacity .4s;
+  -webkit-animation: rotate .8s linear infinite;
+  animation: rotate .8s linear infinite;
+}
+.spinner::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 22px;
+  height: 22px;
+  background: url(../images/spinner-mask.png);
+}
+
+
+/* main structure: shared properties; */
+
+header, main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+header, nav {
+  width: 160px;
+}
+
+
+/* intro animation */
+
+header, nav, main {
+  opacity: 0;
+  transition: 1.2s cubic-bezier(.4, .1, 0, 1.04);
+}
+header {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+nav {
+  -webkit-transform: translateX(-150%);
+  transform: translateX(-150%);
+  transition-delay: .4s;
+}
+main {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  transition-delay: .7s;
+}
+.ready header, .ready nav, .ready main {
+  opacity: 1;
+}
+.ready header, .ready nav {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+.ready main {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.ready > .spinner {
+  opacity: 0;
+}
+
+
+/* specific styles */
+
+header {
+  background: #fff;
+  z-index: 2;
+  box-shadow: 1px 0 1px rgba(5,30,50,.2);
+}
+header::before, header img {
+  width: 60px;
+  height: 60px;
+  margin-top: 23px;
+  border-radius: 30px;
+}
+header::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 30px);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.2);
+}
+header img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 24px;
+}
+header section {
+  display: table-cell;
+  width: 140px;
+  height: 65px;
+  padding: 22px 10px;
+  vertical-align: middle;
+  background: linear-gradient(#E7E9EC, #E7E9EC) 50% 0,
+              linear-gradient(#E7E9EC, #E7E9EC) 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 80px 1px;
+}
+header section p {
+  margin-top: .4em;
+  font: 1.1em georgia, serif;
+}
+header h1, header section p {
+  line-height: 1.3;
+}
+header li {
+  width: 26px;
+  height: 26px;
+  margin: 10px auto;
+}
+header ul {
+  margin-top: 24px;
+}
+header li a {
+  display: block;
+  height: 0;
+  border: 1px solid #E7E9EC;
+  overflow: hidden;
+  padding-top: 24px;
+  border-radius: 4px;
+  background: #39404B url(../images/links.png);
+  transition: background-color .3s;
+}
+header li a[href^="http://dribbble"] {
+  background-position: 50% 0;
+}
+header li a[href^="http://twitter"] {
+  background-position: 100% 0;
+}
+header li a[href^="mailto"]:hover {
+  background-color: #95D52A;
+}
+header li a[href^="http://dribbble"]:hover {
+  background-color: #ED87F6;
+}
+header li a[href^="http://twitter"]:hover {
+  background-color: #28BEE3;
+}
+header #location {
+  position: absolute;
+  width: 140px;
+  padding: 0 10px;
+  bottom: 22px;
+}
+header #location small {
+  font-size: .9em;
+}
+header #location::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 8px;
+  background: url(../images/location.png) no-repeat 50% 50%;
+  border: 1px solid #E7E9EC;
+  border-radius: 4px;
+}
+header #location strong {
+  display: block;
+}
+
+nav {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  z-index: 1;
+  margin-left: 160px;
+  background: rgba(255,255,255,.5);
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.2), 1px 0 1px rgba(5,30,50,.2);
+}
+nav li, nav img {
+  width: 120px;
+  height: 90px;
+  border-radius: 4px;
+}
+nav li {
+  position: relative;
+  background: #fff;
+  margin: 18px auto;
+  box-shadow: 0 1px 2px rgba(5,30,50,.2);
+}
+nav img {
+  cursor: pointer;
+  opacity: 0;
+  transition: .4s;
+}
+nav img.loaded {
+  opacity: 1;
+}
+nav img.loaded + .spinner {
+  opacity: 0;
+}
+
+#selection {
+  position: absolute;
+  z-index: 1;
+  width: 122px;
+  height: 92px;
+  left: 19px;
+  margin-top: -1px;
+  background: url(../images/selection.png);
+  transition: .5s cubic-bezier(.5, .1, 0, 1.1);
+}
+
+main {
+  overflow: hidden;
+  left: 160px;
+  right: 0;
+}
+
+#shot, #shot * {
+ position: absolute;
+}
+#shot, #shot img {
+  width: 400px;
+}
+#shot {
+  overflow: hidden;
+  height: 365px;
+  z-index: 1;
+  left: calc(50% - 130px);
+  top: calc(45% - 180px);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(5,30,50,.2);
+  padding: 10px;
+  border-radius: 4px;
+}
+#shot img {
+  height: 300px;
+  left: 10px;
+  border-radius: 2px;
+}
+#shot h1.hidden, #shot p.hidden {
+  -webkit-animation: hideDescription .8s;
+  animation: hideDescription .8s;
+}
+#shot h1.hidden {
+  -webkit-animation-delay: .1s;
+  animation-delay: .1s;
+}
+#shot h1.visible, #shot p.visible {
+  transition-delay: .2s;
+}
+#shot h1 {
+  top: 327px;
+  width: calc(100% - 20px);
+}
+#shot p {
+  top: 346px;
+  left: calc(50% - 26px);
+  width: 52px;
+  padding: 1px 0;
+  border: 1px solid #E7E9EC;
+  border-radius: 3px;
+}
+#shot p::before {
+  content: "";
+  display: inline-block;
+  margin-right: 4px;
+  width: 10px;
+  height: 9px;
+  background: url(../images/calendar.png);
+}
+
+#background, #background span {
+  width: 100%;
+  height: 100%;
+}
+#background {
+  position: fixed;
+  -webkit-filter: blur(40px);
+  filter: blur(40px);
+}
+#background span {
+  position: absolute;
+  left: 0;
+  background-position: 50% 50%;
+  background-size: cover;
+}
+#background .visible {
+  opacity: .5;
+}
+#background.no-blur  {
+  background: #E7E9EC;
+}
+#background.no-blur .visible {
+  opacity: .03;
+}
+
+@media (min--moz-device-pixel-ratio: 1.5),
+       (-o-min-device-pixel-ratio: 3/2),
+       (-webkit-min-device-pixel-ratio: 1.5),
+       (min-device-pixel-ratio: 1.5),
+       (min-resolution: 144dpi),
+       (min-resolution: 1.5dppx) {
+  .spinner::before {
+    background: url(../images/spinner-mask@2x.png);
+    background-size: 100% 100%;
+  }
+  header li a {
+    background-image: url(../images/links@2x.png);
+    background-size: 72px 24px;
+  }
+  header #location::before {
+    background-image: url(../images/location@2x.png);
+    background-size: 14px 19px;
+  }
+  #selection {
+    background: url(../images/selection@2x.png);
+    background-size: 100% 100%;
+  }
+  #shot p::before {
+    background: url(../images/calendar@2x.png);
+    background-size: 100% 100%;
+  }
+}
