@@ -183,7 +183,7 @@ header li a {
 header li a[href^="http://dribbble"] {
   background-position: 50% 0;
 }
-header li a[href^="http://twitter"] {
+header li a[href^="https://twitter"] {
   background-position: 100% 0;
 }
 header li a[href^="mailto"]:hover {
@@ -192,7 +192,7 @@ header li a[href^="mailto"]:hover {
 header li a[href^="http://dribbble"]:hover {
   background-color: #ED87F6;
 }
-header li a[href^="http://twitter"]:hover {
+header li a[href^="https://twitter"]:hover {
   background-color: #28BEE3;
 }
 header #location {

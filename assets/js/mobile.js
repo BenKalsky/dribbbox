@@ -14,17 +14,6 @@
     return document.createElement(el)
   }
 
-  function storeApiResponse(apiResponse) {
-    var shots = apiResponse.shots,
-        player = shots[0].player
-
-    ;(function(o) {
-      o.shots = shots
-      o.name = player.name
-      o.twitter = player.twitter_screen_name
-    })(dribbbox.dribbbleProfile)
-  }
-
   function buildUI() {
     var title = document.querySelector("title")
       , fragment = document.createDocumentFragment()
@@ -141,15 +130,15 @@
     var thumbList = create("ul")
 
     dribbbox.dribbbleProfile.shots.forEach(function(shot, i) {
-
+      var availableShot = shot.images.hidpi || shot.images.normal
       var img = create("img")
       img.addEventListener("load", function(e) {
         e.target.className = "loaded"
         if (i == 0) this.firstShotLoadedCallback()
       }.bind(this))
-      img.src = shot.image_url
+      img.src = availableShot
       img.dribbboxShotInfo = {
-        url: shot.image_url,
+        url: availableShot,
         title: shot.title,
         year: shot.created_at.substring(0,4)
       }
@@ -227,6 +216,21 @@
     twitter: ""
   }
 
+  dribbbox.storeUserProfile = function(player) {
+    dribbbox.dribbbleProfile.name = player.data.name
+    dribbbox.dribbbleProfile.avatar = player.data.avatar_url
+    dribbbox.dribbbleProfile.location = player.data.location
+    dribbbox.dribbbleProfile.twitter = player.data.links.twitter
+
+    dribbbox.apiCall.getShots()
+  }
+
+  dribbbox.storeShots = function(apiResponse) {
+    dribbbox.dribbbleProfile.shots = apiResponse.data
+
+    buildUI()
+  }
+
   dribbbox.Spinner = function() {
     this.domNode = create("span")
     this.domNode.className = "spinner"
@@ -235,20 +239,23 @@
     })
   }
 
-  dribbbox.callAPI = function(username, callback) {
-    var script = create("script")
-    script.src = "http://api.dribbble.com/players/"
-               + username.trim()
-               + "/shots?per_page=20&amp;callback="
-               +  (callback || "dribbbox.init")
-    document.head.appendChild(script)
-  }
-
-  dribbbox.init = function(apiResponse) {
-    storeApiResponse(apiResponse)
-    buildUI()
+  dribbbox.apiCall = {
+    buildScript: function(path) {
+      var script = create("script")
+      script.src = "https://api.dribbble.com/v1/users/"
+                 + dribbbox.config.dribbble_username.trim()
+                 + path
+                 + "&access_token=6a797c5ab12b0529be1b8c0b7f58bb2ebd5825d997c93a6b8caee4ce6d1568b3"
+      document.head.appendChild(script)
+    },
+    getUserInfo: function() {
+      this.buildScript("?callback=dribbbox.storeUserProfile")
+    },
+    getShots: function() {
+      this.buildScript("/shots?callback=dribbbox.storeShots&per_page=20")
+    }
   }
 
 })()
 
-dribbbox.callAPI(dribbbox.config.dribbble_username)
+dribbbox.apiCall.getUserInfo()
