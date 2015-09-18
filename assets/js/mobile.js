@@ -69,7 +69,7 @@
     links.Dribbble = "http://dribbble.com/" + dribbbox.config.dribbble_username
 
     if (dribbbox.dribbbleProfile.twitter)
-      links.Twitter = "http://twitter.com/" + dribbbox.dribbbleProfile.twitter
+      links.Twitter = dribbbox.dribbbleProfile.twitter
 
     for (var prop in links) {
       var li = create("li"), a = create("a")
